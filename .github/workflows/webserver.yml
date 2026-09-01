@@ -20,6 +20,19 @@ permissions:
   contents: read
 
 jobs:
+  nginx-propagation-header-tests:
+    name: nginx propagation header regression tests
+    runs-on: ubuntu-22.04
+    steps:
+      - name: checkout otel webserver
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: run regression tests
+        run: make -C instrumentation/otel-webserver-module/test/nginx test
+      - name: run regression tests with ASan
+        run: make -C instrumentation/otel-webserver-module/test/nginx asan
+
   webserver-build-test-ubuntu:
     name: webserver-ubuntu-build
     runs-on: ubuntu-22.04
